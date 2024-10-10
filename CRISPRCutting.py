@@ -105,32 +105,40 @@ def create_stacked_bar_graph():
     Figures are saved to a subfolder titled "Figures"
 
     """
+    WT = []
+    InFrame = []
+    FS = []
     for key in sample_dict.keys():
-        # Color palette
         sample = sample_dict[key]
         # genotype = sample["Genotype"]
-        WT = sample["WT"]
-        InFrame = sample["InFrame"]
-        FS = sample["FS"]
+        WT.extend(sample["WT"])
+        InFrame.extend(sample["InFrame"])
+        FS.extend(sample["FS"])
 
-        # Create the graph
-        plt.figure(figsize=(10, 6))
-        # plt.title("{}: {}".format(key, genotype))
-        plt.title("{}".format(key))
-        plt.bar(gRNAs, WT, label="WT", color=color_palette[0])
-        plt.bar(gRNAs, InFrame, bottom=WT,
-                label="In-Frame", color=color_palette[1])
-        plt.bar(gRNAs, FS, bottom=WT + InFrame,
-                label="FS", color=color_palette[2])
-        plt.legend(bbox_to_anchor=(1.03, 1), loc="upper left")
-        plt.xlabel("gRNA")
-        plt.ylabel("Percent of Reads")
+    WT_array = np.array(WT)
+    InFrame_array = np.array(InFrame)
+    FS_array = np.array(FS)
+    sample_label = list(range(1, len(WT) + 1))
+    sample_label_array = np.array(sample_label)
 
-        plt.ylim(0, 100 + 5)
+    # Create the graph
+    plt.figure(figsize=(10, 6))
+    plt.bar(sample_label_array, WT_array, label="WT", color=color_palette[0])
+    plt.bar(sample_label_array, InFrame_array, bottom=WT_array,
+            label="In-Frame", color=color_palette[1])
+    plt.bar(sample_label_array, FS_array, bottom=WT_array + InFrame_array,
+            label="FS", color=color_palette[2])
+    plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
+    plt.xlabel("Sample Number")
+    plt.ylabel("Percent of Reads")
 
-        plt.savefig("Figures/{}_CRISPRCuttingAnalysis.png".format(key))
-        plt.tight_layout()
-        plt.show()
+    plt.ylim(0, 100 + 5)
+
+    plt.tight_layout()
+    plt.subplots_adjust(right=0.8)
+    plt.savefig("Figures/CRISPRCuttingAnalysis.png".format(key), dpi=600)
+
+    plt.show()
 
 
 def main(file_name: str):
