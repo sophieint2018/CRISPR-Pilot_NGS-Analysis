@@ -116,9 +116,12 @@ def create_stacked_bar_graph():
         FS.extend(sample["FS"])
 
     WT_array = np.array(WT)
+    WT_array = np.delete(WT_array, -1)  # Removes the CNTL sample
     InFrame_array = np.array(InFrame)
+    InFrame_array = np.delete(InFrame_array, -1)  # Removes the CNTL sample
     FS_array = np.array(FS)
-    sample_label = list(range(1, len(WT) + 1))
+    FS_array = np.delete(FS_array, -1)  # Removes the CNTL sample
+    sample_label = list(range(1, len(WT)))
     sample_label_array = np.array(sample_label)
 
     # Create the graph
@@ -136,7 +139,8 @@ def create_stacked_bar_graph():
 
     plt.tight_layout()
     plt.subplots_adjust(right=0.8)
-    plt.savefig("Figures/CRISPRCuttingAnalysis.png".format(key), dpi=600)
+    plt.savefig("Figures/CRISPRCuttingAnalysis.png".format(key),
+                dpi=600, transparent=True)
 
     plt.show()
 
