@@ -125,21 +125,31 @@ def create_stacked_bar_graph():
     sample_label_array = np.array(sample_label)
 
     # Create the graph
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(15, 9))
     plt.bar(sample_label_array, WT_array, label="WT", color=color_palette[0])
     plt.bar(sample_label_array, InFrame_array, bottom=WT_array,
             label="In-Frame", color=color_palette[1])
     plt.bar(sample_label_array, FS_array, bottom=WT_array + InFrame_array,
             label="FS", color=color_palette[2])
-    plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left")
-    plt.xlabel("Sample Number")
-    plt.ylabel("Percent of Reads")
+    plt.legend(bbox_to_anchor=(1.05, 1), loc="upper left",
+               fontsize=25, frameon=False)
+    plt.xlabel("Sample Number", fontdict={
+               'fontsize': 25, 'fontweight': 'bold'})
+    plt.ylabel("Percent of Reads", fontdict={
+               'fontsize': 25, 'fontweight': 'bold'})
 
     plt.ylim(0, 100 + 5)
 
+    # Change the size of the tick mark font
+    plt.tick_params(axis='both', labelsize=25)
+
+    # Adjust the border thickness
+    for spine in plt.gca().spines.values():
+        spine.set_linewidth(1)  # Change 2 to your desired thickness
+
     plt.tight_layout()
-    plt.subplots_adjust(right=0.8)
-    plt.savefig("Figures/CRISPRCuttingAnalysis.png".format(key),
+    plt.subplots_adjust(right=0.75)
+    plt.savefig("Figures/CRISPRCuttingAnalysis.pdf".format(key),
                 dpi=600, transparent=True)
 
     plt.show()
